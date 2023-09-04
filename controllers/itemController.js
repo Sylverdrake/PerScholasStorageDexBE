@@ -12,7 +12,7 @@ const getAllItems = async (req, res) =>
 //READ/GET Specific Item
 const getItem = async (req, res) =>
 {
-    const { id } = req.params;
+    const { id } = req.params
         if(!mongoose.Types.ObjectId.isValid(id))
         {
             return res.status(404).json({error: 'Invalid Database ID - Please use a valid ID'})
@@ -44,13 +44,48 @@ const createItem = async (req, res) =>
         res.status(400).json({error: error.message})
     }
 }
-//DELETE Item
 
+//DELETE Item
+const deleteItem = async (req, res) =>
+{
+    const { id } = req.params;
+        if(!mongoose.Types.ObjectId.isValid(id))
+        {
+            return res.status(404).json({error: 'Invalid Database ID - Please use a valid ID'})
+        }
+
+    const item = await Item.findOneAndDelete({_id: id})
+        if(!item)
+        {
+            return res.status(404).json({error: 'Item does not exist'})
+        }
+        res.status(200).json(item)
+}
 //UPDATE Item
+const editItem = async (req, res) =>
+{
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id))
+    {
+        return res.status(404).json({error: 'Invalid Database ID - Please use a valid ID'})
+    }
+
+    const item = await Item.findOneAndUpdate({_id: id},
+        {
+            ...req.body
+        })
+    if(!item)
+    {
+        return res.status(404).json({error: 'Item does not exist'})
+    }
+    res.status(200).json(item)
+}
 
 module.exports = 
 {
     getAllItems,
     getItem,
-    createItem
+    createItem,
+    deleteItem,
+    editItem
 }
