@@ -52,7 +52,7 @@ const createItem = async (req, res) =>
         }
             if(emptyFields.length > 0 )
             {
-                return res.status(400).json({error: "Field required", emptyFields})
+                return res.status(400).json({error: "Field required", empty})
             }
 
 
@@ -92,11 +92,8 @@ const updateItem = async (req, res) =>
     {
         return res.status(404).json({error: 'Invalid Database ID - Please use a valid ID'})
     }
-
-    const item = await Item.findOneAndUpdate({_id: id},
-        {
-            ...req.body
-        })
+    
+    const item = await Item.findOneAndUpdate({ _id: id }, {...req.body}, {new: true})
     if(!item)
     {
         return res.status(404).json({error: 'Item does not exist'})
