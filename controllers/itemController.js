@@ -62,7 +62,7 @@ const deleteItem = async (req, res) =>
         res.status(200).json(item)
 }
 //UPDATE Item
-const editItem = async (req, res) =>
+const updateItem = async (req, res) =>
 {
     const { id } = req.params;
     if(!mongoose.Types.ObjectId.isValid(id))
@@ -87,5 +87,5 @@ module.exports =
     getItem,
     createItem,
     deleteItem,
-    editItem
+    updateItem
 }
