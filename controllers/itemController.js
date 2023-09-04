@@ -33,6 +33,29 @@ const createItem = async (req, res) =>
     //create a body with destructured elements
     const {name, location, category, description} = req.body
 
+    let emptyFields = []
+        if(!name)
+        {
+            emptyFields.push('name')
+        }    
+        if(!location)
+        {
+            emptyFields.push('location')
+        }
+        if(!category)
+        {
+            emptyFields.push('category')
+        }
+        if(!description)
+        {
+            emptyFields.push('description')
+        }
+            if(emptyFields.length > 0 )
+            {
+                return res.status(400).json({error: "Field required", emptyFields})
+            }
+
+
     //Try-Catch to add document to database
     try
     {
