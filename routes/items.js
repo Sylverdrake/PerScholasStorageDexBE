@@ -1,22 +1,35 @@
 const express = require('express');
+const Item = require('../models/itemModel')
 const router = express.Router();
 
-//READ All Items
+//READ/GET All Items
 router.get('/', (req, res)=>
 {
-    res.json({msg: 'Read All Items '})
+    res.json({msg: 'Read/Get All Items '})
 })
 
-//READ Specific Item
+//READ/GET Specific Item
 router.get('/:id', (req,res)=>
 {
-    res.json({msg: 'Read Single Item'})
+    res.json({msg: 'Read/Get Single Item'})
 })
 
-//CREATE New Item
-router.post('/', (req, res) =>
+//CREATE/POST New Item
+router.post('/', async (req, res) =>
 {
-    res.json({msg: 'Create New Item'})
+    //create a body with destructured elements
+    const {name, location, category, description} = req.body
+
+    //Try-Catch
+    try
+    {
+        const newItem = await Item.create({name, location, category, description});
+        res.status(200).json(newItem)
+    }
+    catch(error)
+    {
+        res.status(400).json({error: error.message})
+    }
 })
 
 //DELETE Item
