@@ -6,6 +6,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const itemRoutes = require('./routes/items')
+const userRoutes = require('./routes/user')
 
 //===Middleware===
 //If request has body, passes data
@@ -26,7 +27,8 @@ app.use((req, res, next) =>
 // })
 
 //Use itemRoutes
-app.use('/api/items',itemRoutes)
+app.use('/api/items', itemRoutes)
+app.use('/api/user', userRoutes)
 
 //Connect to Database
 mongoose.connect(process.env.MONGO_URI)
