@@ -1,4 +1,5 @@
 const Item = require('../models/itemModel');
+const mongoose = require('mongoose');
 
 //READ/GET All Items
 const getAllItems = async (req, res) =>
@@ -11,7 +12,12 @@ const getAllItems = async (req, res) =>
 //READ/GET Specific Item
 const getItem = async (req, res) =>
 {
-    const { id } = req.params
+    const { id } = req.params;
+        if(!mongoose.Types.ObjectId.isValid(id))
+        {
+            return res.status(404).json({error: 'Invalid Database ID - Please use a valid ID'})
+        }
+
     const item = await Item.findById(id)
         if(!item)
         {
