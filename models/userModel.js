@@ -5,24 +5,27 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema
 ({
-    username: {type: String, required: true, unique: true},
+    username: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true}
 })
 
 //Static Signup Method -- Use a normal function because this.x won't work
-userSchema.statics.signup = async function(email, username, password)
+userSchema.statics.signup = async function(username, email, password)
     {
-        const emailExists = await this.findOne({email})
         const usernameExists = await this.findOne({username})
-            if (usernameExists)
-            {
-                throw Error('Username already exists')
-            }
-            else if (emailExists)
+        if (usernameExists)
+        {
+            throw Error('Username already exists')
+        }
+
+        const emailExists = await this.findOne({email})
+            if (emailExists)
             {
                 throw Error('Email already exists')
             }
+        
+        
 
 
         const salt = await bcrypt.genSalt(10);
