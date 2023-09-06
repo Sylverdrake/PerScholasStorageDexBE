@@ -8,6 +8,7 @@ const itemSchema = new Schema
     location: {type: String, required: true},
     category: {type: String, required: true},
     description: {type: String, required: true},
+    user_id: {type: String, required: true}
 },
 //Tells us when property was created and updated.
 {timestamps: true})

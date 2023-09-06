@@ -4,8 +4,10 @@ const mongoose = require('mongoose');
 //READ/GET All Items
 const getAllItems = async (req, res) =>
 {
-    //variable which retrieves all items asynchronously, sorts by most recent.
-    const items = await Item.find({}).sort({createdAt: -1})
+    //variable which retrieves all items PER USER ID
+    const user_id = req.user._id
+    //variable which retrieves all items asynchronously PER USER, sorts by most recent.
+    const items = await Item.find({user_id}).sort({createdAt: -1})
     res.status(200).json(items)
 }
 
@@ -50,16 +52,17 @@ const createItem = async (req, res) =>
         {
             emptyFields.push('description')
         }
-            if(emptyFields.length > 0 )
-            {
-                return res.status(400).json({error: "Field required", empty})
-            }
+        if(emptyFields.length > 0 )
+        {
+            return res.status(400).json({error: "Field required", emptyFields})
+        }
 
 
     //Try-Catch to add document to database
     try
     {
-        const newItem = await Item.create({name, location, category, description});
+        const user_id = req.user._id;
+        const newItem = await Item.create({name, location, category, description, user_id});
         res.status(200).json(newItem)
     }
     catch(error)
