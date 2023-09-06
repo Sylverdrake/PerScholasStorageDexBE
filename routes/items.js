@@ -1,7 +1,11 @@
 const express = require('express');
 const {getAllItems, getItem, createItem, deleteItem, updateItem} = require('../controllers/itemController');
+const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
+
+//require authorization to view routes
+router.use(requireAuth)
 
 //READ/GET All Items
 router.get('/', getAllItems)
